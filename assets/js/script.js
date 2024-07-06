@@ -1,4 +1,10 @@
 const body = document.body;
+//Create the logic for application
+let count = 0;  //initialize a variable count to 0
+let s2;  //thousand
+let s3;  //hundred
+let s4;  //ten
+let s5; //unit
 
 //Create Title
 const title = document.createElement('h1');
@@ -25,7 +31,7 @@ counterDisplay.className = "display";
 
 //Create DisplaySlot
 const displaySlot = {};
-for (let i=1; i<6; i++){
+for (let i=0; i<5; i++){
     displaySlot[i] = document.createElement('div');
     counterDisplay.append(displaySlot[i]);
     displaySlot[i].className = `slot slot${i}`;
@@ -33,99 +39,134 @@ for (let i=1; i<6; i++){
 }
 
 
+
 //Create Control
 const counterControl = document.createElement('div');
 counterContainer.append(counterControl);
 counterControl.className = "control";
 
-//Create Reset Div with reset button
-const counterControlReset = document.createElement('div');
-counterControl.append(counterControlReset);
-counterControlReset.className = "control-slot control-slot--w100";
+const counterControlSlot = {};
+for(let k=0; k<3;k++){
+    counterControlSlot[k] = document.createElement('div');
+    counterControl.append(counterControlSlot[k]);
+    counterControlSlot[k].className = "control-slot";
+}
+/*
+    counterControlSlot[1] Container Reset
+    counterControlSlot[2] Container up
+    counterControlSlot[3] Container down
+*/
 
 //Reset button
 const buttonReset = document.createElement('button');
-counterControlReset.append(buttonReset);
+counterControlSlot[0].append(buttonReset);
 buttonReset.className = "btn";
 buttonReset.innerHTML = 'Reset';
 
-//Create Up Div with command for up the counter
-const counterControlUp = document.createElement('div');
-counterControl.append(counterControlUp);
-counterControlUp.className = "control-slot";
+//Operation in general
 
-//Up 1
-const buttonPlus = document.createElement('button');
-counterControlUp.append(buttonPlus);
-buttonPlus.className = "btn";
-buttonPlus.innerHTML = '+1';
+const operation = ['1','10','100','1000'];
 
-//Up 10
-const buttonPlus10 = document.createElement('button');
-counterControlUp.append(buttonPlus10);
-buttonPlus10.className = "btn";
-buttonPlus10.innerHTML = '+10';
+//Create button Up 
+const buttonPlus = {};
+for(let j=0; j < operation.length; j++){
+    buttonPlus[j] = document.createElement('button');
+    counterControlSlot[1].append(buttonPlus[j]);
+    buttonPlus[j].className = "btn";
+    buttonPlus[j].innerHTML =`+${operation[j]}`;
+    buttonPlus[j].dataset.action = operation[j];
+    buttonPlus[j].addEventListener('click',counterUp);
+}
+/*
+    buttonPlus[0] +1;
+    buttonPlus[1] +10;
+    buttonPlus[2] +100;
+    buttonPlus[3] +1000;
+*/
 
-//Up 100
-const buttonPlus100 = document.createElement('button');
-counterControlUp.append(buttonPlus100);
-buttonPlus100.className = "btn";
-buttonPlus100.innerHTML = '+100';
+//Create function Up
+function counterUp(event){
+    if(count<9999){
+        const number = event.target.dataset.action;
+        switch(number){
+            case '1':
+                count++;
+                updateDisplay();
+            break;
+            case '10':
+                count=count+10;
+                updateDisplay();
+            break;
+            case '100':
+                count=count+100;
+                updateDisplay();
+            break;
+            case '1000':
+                count=count+1000;
+                updateDisplay();
+            break;
+            default:
+                count=0;
+                updateDisplay(); 
+        }
+    }else{
+        resetDisplay();
+    }
+}
 
-//Up 1000
-const buttonPlus1000 = document.createElement('button');
-counterControlUp.append(buttonPlus1000);
-buttonPlus1000.className = "btn";
-buttonPlus1000.innerHTML = '+1000';
+//Create button Down
+const buttonDown = {};
+for(let q=0;q < operation.length; q++){
+    buttonDown[q] = document.createElement('button');
+    counterControlSlot[2].append(buttonDown[q]);
+    buttonDown[q].className = "btn";
+    buttonDown[q].innerHTML =`-${operation[q]}`;
+    buttonDown[q].dataset.action = operation[q];
+    buttonDown[q].addEventListener('click',counterDown);
+}
+/*
+    buttonDown[0] -1;
+    buttonDown[1] -10;
+    buttonDown[2] -100;
+    buttonDown[3] -1000;
+*/
 
-
-
-//Create Up Div with command for down the counter
-const counterControlDown = document.createElement('div');
-counterControl.append(counterControlDown);
-counterControlDown.className = "control-slot";
-
-//Down 1
-const buttonDown = document.createElement('button');
-counterControlDown.append(buttonDown);
-buttonDown.className = "btn";
-buttonDown.innerHTML = '-1';
-
-//Down 10
-const buttonDown10 = document.createElement('button');
-counterControlDown.append(buttonDown10);
-buttonDown10.className = "btn";
-buttonDown10.innerHTML = '-10';
-
-//Down 100
-const buttonDown100 = document.createElement('button');
-counterControlDown.append(buttonDown100);
-buttonDown100.className = "btn";
-buttonDown100.innerHTML = '-100';
-
-//Down 1000
-const buttonDown1000 = document.createElement('button');
-counterControlDown.append(buttonDown1000);
-buttonDown1000.className = "btn";
-buttonDown1000.innerHTML = '-1000';
-
-
-
-
-//Create the logic for application
-
-let count = 0;  //initialize a variable count to 0
-
-let s2;  //thousand
-let s3;  //hundred
-let s4;  //ten
-let s5; //unit
+//Create function Down
+function counterDown(event){
+    if(count>-9999){
+        const number = event.target.dataset.action;
+        switch(number){
+            case '1':
+                count--;
+                updateDisplay();
+            break;
+            case '10':
+                count=count-10;
+                updateDisplay();
+            break;
+            case '100':
+                count=count-100;
+                updateDisplay();
+            break;
+            case '1000':
+                count=count-1000;
+                updateDisplay();
+            break;
+            default:
+                count=0;
+                updateDisplay(); 
+        }
+    }else{
+        resetDisplay();
+    }
+}
 
 //Create function Reset
 buttonReset.addEventListener('click', ()=>{
     resetDisplay();
     updateDisplay();
 });
+
 function resetDisplay(){
     count = 0;
     s2 =0;  //thousand
@@ -134,102 +175,8 @@ function resetDisplay(){
     s5 =0;  //unit
 }
 
-//Create function up 1
-buttonPlus.addEventListener('click', ()=>{
-        if(count<9999){
-            count++;
-            updateDisplay();
-        }else{
-            count=0;
-            resetDisplay()
-        }
-});
-
-//Create function up 10
-buttonPlus10.addEventListener('click', ()=>{
-    if(count<9999){
-        count=count+10;
-        updateDisplay();
-    }else{
-        count=0;
-        resetDisplay();
-    }
-});
-
-//Create function up 100
-buttonPlus100.addEventListener('click', ()=>{
-    if(count<9999){
-        count=count+100;
-        updateDisplay();
-    }else{
-        count=0;
-        resetDisplay();
-    }
-});
-
-//Create function up 1000
-buttonPlus1000.addEventListener('click', ()=>{
-    if(count<9999){
-        count=count+1000;
-        updateDisplay();
-    }else{
-        count=0;
-        resetDisplay();
-    }
-});
-
-
-
-//Create function down 1
-buttonDown.addEventListener('click', ()=>{
-    if(count> -9999){
-        count--;
-        updateDisplay();
-    }else{
-        count=0;
-        resetDisplay();
-    }
-});
-
-
-//Create function down 10
-buttonDown10.addEventListener('click', ()=>{
-    if(count> -9999){
-        count=count-10;
-        updateDisplay();
-    }else{
-        count=0;
-        resetDisplay();
-    }
-});
-
-
-//Create function down 100
-buttonDown100.addEventListener('click', ()=>{
-    if(count> -9999){
-        count=count-100;
-        updateDisplay();
-    }else{
-        count=0;
-        resetDisplay();
-    }
-});
-
-//Create function down 1000
-buttonDown1000.addEventListener('click', ()=>{
-    if(count> -9999){
-        count=count-1000;
-        updateDisplay();
-    }else{
-        count=0;
-        resetDisplay();
-    }
-});
-
-
 
 //create refesh of Display
-
 function updateDisplay(){
     console.log(count);
     //Logic for display Number
@@ -322,21 +269,19 @@ function updateDisplay(){
         }
     }
 
-
-    
     //What display show?
       if(count >= 0){
-        displaySlot[1].innerHTML = ('+'); //symbol
-        displaySlot[2].innerHTML =s2;  //thousand
-        displaySlot[3].innerHTML =s3;  //hundred
-        displaySlot[4].innerHTML =s4;  //ten
-        displaySlot[5].innerHTML =s5;  //unit
+        displaySlot[0].innerHTML = ('+'); //symbol
+        displaySlot[1].innerHTML =s2;  //thousand
+        displaySlot[2].innerHTML =s3;  //hundred
+        displaySlot[3].innerHTML =s4;  //ten
+        displaySlot[4].innerHTML =s5;  //unit
     }else{
-        displaySlot[1].innerHTML = ('-');//symbol
-        displaySlot[2].innerHTML =s2;  //thousand
-        displaySlot[3].innerHTML =s3;  //hundred
-        displaySlot[4].innerHTML =s4;  //ten
-        displaySlot[5].innerHTML =s5;  //unit
+        displaySlot[0].innerHTML = ('-');//symbol
+        displaySlot[1].innerHTML =s2;  //thousand
+        displaySlot[2].innerHTML =s3;  //hundred
+        displaySlot[3].innerHTML =s4;  //ten
+        displaySlot[4].innerHTML =s5;  //unit
 
     }
 }
