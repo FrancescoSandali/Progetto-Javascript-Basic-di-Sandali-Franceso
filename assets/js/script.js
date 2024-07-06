@@ -38,13 +38,12 @@ for (let i=0; i<5; i++){
     displaySlot[i].innerHTML = (i==0) ? '+' : '0';
 }
 
-
-
 //Create Control
 const counterControl = document.createElement('div');
 counterContainer.append(counterControl);
 counterControl.className = "control";
 
+//Create ControlSlot
 const counterControlSlot = {};
 for(let k=0; k<3;k++){
     counterControlSlot[k] = document.createElement('div');
@@ -282,11 +281,5 @@ function updateDisplay(){
         displaySlot[2].innerHTML =s3;  //hundred
         displaySlot[3].innerHTML =s4;  //ten
         displaySlot[4].innerHTML =s5;  //unit
-
     }
 }
-
-
-
-
-
