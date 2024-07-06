@@ -50,11 +50,6 @@ for(let k=0; k<3;k++){
     counterControl.append(counterControlSlot[k]);
     counterControlSlot[k].className = "control-slot";
 }
-/*
-    counterControlSlot[1] Container Reset
-    counterControlSlot[2] Container up
-    counterControlSlot[3] Container down
-*/
 
 //Reset button
 const buttonReset = document.createElement('button');
@@ -63,9 +58,7 @@ buttonReset.className = "btn";
 buttonReset.innerHTML = 'Reset';
 
 //Operation in general
-
 const operation = ['1','10','100','1000'];
-
 //Create button Up 
 const buttonPlus = {};
 for(let j=0; j < operation.length; j++){
@@ -76,12 +69,6 @@ for(let j=0; j < operation.length; j++){
     buttonPlus[j].dataset.action = operation[j];
     buttonPlus[j].addEventListener('click',counterUp);
 }
-/*
-    buttonPlus[0] +1;
-    buttonPlus[1] +10;
-    buttonPlus[2] +100;
-    buttonPlus[3] +1000;
-*/
 
 //Create function Up
 function counterUp(event){
@@ -123,12 +110,6 @@ for(let q=0;q < operation.length; q++){
     buttonDown[q].dataset.action = operation[q];
     buttonDown[q].addEventListener('click',counterDown);
 }
-/*
-    buttonDown[0] -1;
-    buttonDown[1] -10;
-    buttonDown[2] -100;
-    buttonDown[3] -1000;
-*/
 
 //Create function Down
 function counterDown(event){
