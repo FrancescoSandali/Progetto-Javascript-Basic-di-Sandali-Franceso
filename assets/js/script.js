@@ -12,7 +12,7 @@ title.after(subtitle);
 subtitle.innerHTML ='Questo è un progetto di Sandali Francesco';
 subtitle.className = "subtitle";
 
-//Create Counter
+//Create Counter Structure
 const counterContainer = document.createElement('div');
 subtitle.after(counterContainer);
 counterContainer.className = "container";
@@ -22,35 +22,15 @@ const counterDisplay = document.createElement('div');
 counterContainer.append(counterDisplay);
 counterDisplay.className = "display";
 
-//Create Slot Display with +/-
-const displaySlot1 = document.createElement('div');
-counterDisplay.append(displaySlot1);
-displaySlot1.className = "slot slot1";
-displaySlot1.innerHTML = '+';
 
-//Create Slot Display numeric figures
-const displaySlot2 = document.createElement('div');
-counterDisplay.append(displaySlot2);
-displaySlot2.className = "slot slot2";
-displaySlot2.innerHTML = '0';
-
-//Create Slot Display numeric figures
-const displaySlot3 = document.createElement('div');
-counterDisplay.append(displaySlot3);
-displaySlot3.className = "slot slot3";
-displaySlot3.innerHTML = '0';
-
-//Create Slot Display numeric figures
-const displaySlot4 = document.createElement('div');
-counterDisplay.append(displaySlot4);
-displaySlot4.className = "slot slot4";
-displaySlot4.innerHTML = '0';
-
-//Create Slot Display numeric figures
-const displaySlot5 = document.createElement('div');
-counterDisplay.append(displaySlot5);
-displaySlot5.className = "slot slot5";
-displaySlot5.innerHTML = '0';
+//Create DisplaySlot
+const displaySlot = {};
+for (let i=1; i<6; i++){
+    displaySlot[i] = document.createElement('div');
+    counterDisplay.append(displaySlot[i]);
+    displaySlot[i].className = `slot slot${i}`;
+    displaySlot[i].innerHTML = (i==0) ? '+' : '0';
+}
 
 
 //Create Control
@@ -346,17 +326,17 @@ function updateDisplay(){
     
     //What display show?
       if(count >= 0){
-        displaySlot1.innerHTML = ('+'); //symbol
-        displaySlot2.innerHTML =s2;  //thousand
-        displaySlot3.innerHTML =s3;  //hundred
-        displaySlot4.innerHTML =s4;  //ten
-        displaySlot5.innerHTML =s5;  //unit
+        displaySlot[1].innerHTML = ('+'); //symbol
+        displaySlot[2].innerHTML =s2;  //thousand
+        displaySlot[3].innerHTML =s3;  //hundred
+        displaySlot[4].innerHTML =s4;  //ten
+        displaySlot[5].innerHTML =s5;  //unit
     }else{
-        displaySlot1.innerHTML = ('-');//symbol
-        displaySlot2.innerHTML =s2;  //thousand
-        displaySlot3.innerHTML =s3;  //hundred
-        displaySlot4.innerHTML =s4;  //ten
-        displaySlot5.innerHTML =s5;  //unit
+        displaySlot[1].innerHTML = ('-');//symbol
+        displaySlot[2].innerHTML =s2;  //thousand
+        displaySlot[3].innerHTML =s3;  //hundred
+        displaySlot[4].innerHTML =s4;  //ten
+        displaySlot[5].innerHTML =s5;  //unit
 
     }
 }
