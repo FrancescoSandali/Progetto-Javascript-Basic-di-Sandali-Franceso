@@ -53,37 +53,56 @@ for(let k=0; k<3;k++){
 //Reset button
 const buttonReset = createDomElement('button', 'Reset', 'btn');
 counterControlSlot[0].append(buttonReset);
+buttonReset.dataset.action = "Reset";
 
 //Operation in general
 const operation = ['1','10','100','1000'];
-//Create button Up 
+//Create button Up and buttonDown
 const buttonPlus = {};
+
+const buttonDown = {};
+
 for(let j=0; j < operation.length; j++){
     buttonPlus[j] = createDomElement('button',`+${operation[j]}`, 'btn');
     counterControlSlot[1].append(buttonPlus[j]);
-    buttonPlus[j].dataset.action = operation[j];
-    buttonPlus[j].addEventListener('click',counterUp);
+    buttonPlus[j].dataset.action = `+${operation[j]}`;
+
+    buttonDown[j] = createDomElement('button',`-${operation[j]}`, 'btn');
+    counterControlSlot[2].append(buttonDown[j]);
+    buttonDown[j].dataset.action = `-${operation[j]}`;
 }
 
+counterControl.addEventListener('click', function(event){
+    const action = event.target.dataset.action;
+    if(action === undefined){
+        alert("You didn't click a button, click better");
+    } else if(action.startsWith('+')){
+        counterUp(event);
+    } else if(action.startsWith('-')){
+        counterDown(event);
+    } else if(action == "Reset"){
+        resetDisplay();
+    }
+});
 
 //Create function Up
 function counterUp(event){
     if(count<9999){
         const number = event.target.dataset.action;
         switch(number){
-            case '1':
+            case '+1':
                 count++;
                 updateDisplay();
             break;
-            case '10':
+            case '+10':
                 count=count+10;
                 updateDisplay();
             break;
-            case '100':
+            case '+100':
                 count=count+100;
                 updateDisplay();
             break;
-            case '1000':
+            case '+1000':
                 count=count+1000;
                 updateDisplay();
             break;
@@ -96,33 +115,24 @@ function counterUp(event){
     }
 }
 
-//Create button Down
-const buttonDown = {};
-for(let q=0;q < operation.length; q++){
-    buttonDown[q] = createDomElement('button',`-${operation[q]}`, 'btn');
-    counterControlSlot[2].append(buttonDown[q]);
-    buttonDown[q].dataset.action = operation[q];
-    buttonDown[q].addEventListener('click',counterDown);
-}
-
 //Create function Down
 function counterDown(event){
     if(count>-9999){
         const number = event.target.dataset.action;
         switch(number){
-            case '1':
+            case '-1':
                 count--;
                 updateDisplay();
             break;
-            case '10':
+            case '-10':
                 count=count-10;
                 updateDisplay();
             break;
-            case '100':
+            case '-100':
                 count=count-100;
                 updateDisplay();
             break;
-            case '1000':
+            case '-1000':
                 count=count-1000;
                 updateDisplay();
             break;
@@ -135,126 +145,37 @@ function counterDown(event){
     }
 }
 
-//Create function Reset
-buttonReset.addEventListener('click', ()=>{
-    resetDisplay();
-    updateDisplay();
-});
-
+//Create function reset
 function resetDisplay(){
     count = 0;
     s2 =0;  //thousand
     s3 =0;  //hundred
     s4 =0;  //ten
     s5 =0;  //unit
+    updateDisplay(); 
 }
-
 
 //create refesh of Display
 function updateDisplay(){
     console.log(count);
     //Logic for display Number
     count / 1000  ;
-    let stringCounter = count.toFixed(4).replace('.', '').replace('-','');
+    let stringCounter = Math.abs(count).toString().padStart(4,'0');
     let arrayStringCounter = stringCounter.split('');
     console.log(arrayStringCounter);
-    if(count>=0){
-        logicDisplayUp();
-    }else{
-        logicDisplayDown();
-    }
     
-    // Logic for positive number
-
-    function logicDisplayUp(){
-        switch(count>=0){
-
-            case count <=9 :
-                s5 = arrayStringCounter[0];  //unit
-                s4 = arrayStringCounter[1];  //ten
-                s3 = arrayStringCounter[2];  //hundred
-                s2 = arrayStringCounter[3];  //thousand
-            break;
-
-            case count >= 10 && count <100 :
-                s5 = arrayStringCounter[1];  //unit
-                s4 = arrayStringCounter[0];  //ten
-                s3 = arrayStringCounter[2];  //hundred
-                s2 = arrayStringCounter[3];  //thousand
-            break;
-
-            case count >= 100 && count <1000 :
-                s5 = arrayStringCounter[2];  //unit
-                s4 = arrayStringCounter[1];  //ten
-                s3 = arrayStringCounter[0];  //hundred
-                s2 = arrayStringCounter[3];  //thousand
-            break;
-
-            case count >= 1000:
-                s5 = arrayStringCounter[3];  //unit
-                s4 = arrayStringCounter[2];  //ten
-                s3 = arrayStringCounter[1];  //hundred
-                s2 = arrayStringCounter[0];  //thousand
-            break;
-
-            default:
-                s5 = 0;  //unit
-                s4 = 0;  //ten
-                s3 = 0;  //hundred
-                s2 = 0;  //thousand
-        }
-    }
-
-    // Logic for negative number
-    function logicDisplayDown(){
-        switch(count<0){
-            case count <0 && count>= -9:
-                s5 = arrayStringCounter[0];  //unit
-                s4 = arrayStringCounter[1];  //ten
-                s3 = arrayStringCounter[2];  //hundred
-                s2 = arrayStringCounter[3];  //thousand
-            break;
-
-            case count <= -10 && count > -100 :
-                s5 = arrayStringCounter[1];  //unit
-                s4 = arrayStringCounter[0];  //ten
-                s3 = arrayStringCounter[2];  //hundred
-                s2 = arrayStringCounter[3];  //thousand
-            break;
-
-            case count <= -100 && count > -1000 :
-                s5 = arrayStringCounter[2];  //unit
-                s4 = arrayStringCounter[1];  //ten
-                s3 = arrayStringCounter[0];  //hundred
-                s2 = arrayStringCounter[3];  //thousand
-            break;
-
-            case count <= -1000:
-                s5 = arrayStringCounter[3];  //unit
-                s4 = arrayStringCounter[2];  //ten
-                s3 = arrayStringCounter[1];  //hundred
-                s2 = arrayStringCounter[0];  //thousand
-            break;
-            default:
-                s5 = 0;  //unit
-                s4 = 0;  //ten
-                s3 = 0;  //hundred
-                s2 = 0;  //thousand
-        }
-    }
-
     //What display show?
       if(count >= 0){
         displaySlot[0].innerHTML = ('+'); //symbol
-        displaySlot[1].innerHTML =s2;  //thousand
-        displaySlot[2].innerHTML =s3;  //hundred
-        displaySlot[3].innerHTML =s4;  //ten
-        displaySlot[4].innerHTML =s5;  //unit
+        logicDisplay();
     }else{
-        displaySlot[0].innerHTML = ('-');//symbol
-        displaySlot[1].innerHTML =s2;  //thousand
-        displaySlot[2].innerHTML =s3;  //hundred
-        displaySlot[3].innerHTML =s4;  //ten
-        displaySlot[4].innerHTML =s5;  //unit
+        displaySlot[0].innerHTML = ('-'); //symbol
+        logicDisplay();
+    }
+    function logicDisplay(){
+        displaySlot[4].innerHTML= arrayStringCounter[3];  //unit
+        displaySlot[3].innerHTML= arrayStringCounter[2];  //ten
+        displaySlot[2].innerHTML= arrayStringCounter[1];  //hundred
+        displaySlot[1].innerHTML = arrayStringCounter[0];  //thousand
     }
 }
