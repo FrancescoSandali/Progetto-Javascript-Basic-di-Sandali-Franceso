@@ -1,10 +1,6 @@
 const body = document.body;
 //Create the logic for application
 let count = 0;  //initialize a variable count to 0
-let s2;  //thousand
-let s3;  //hundred
-let s4;  //ten
-let s5; //unit
 
 //Create function for Dom element
 
@@ -40,7 +36,7 @@ for (let i=0; i<5; i++){
 }
 
 //Create Control
-const counterControl = createDomElement('div', '', 'control');
+const counterControl = createDomElement('div','','control');
 counterContainer.append(counterControl);
 
 //Create ControlSlot
