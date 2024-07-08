@@ -6,69 +6,65 @@ let s3;  //hundred
 let s4;  //ten
 let s5; //unit
 
+//Create function for Dom element
+
+function createDomElement(tagName, innerHtml, className){
+    const element = document.createElement(tagName);
+    element.innerHTML = innerHtml;
+    element.className = className;
+    return element;
+}
+
 //Create Title
-const title = document.createElement('h1');
+const title = createDomElement('h1', 'Il mio counter', 'title');
 body.prepend(title);
-title.innerHTML ='Il mio counter';
-title.className = "title";
 
 //Create Sbutitle
-const subtitle = document.createElement('h2');
+const subtitle = createDomElement('h2', 'Questo è un progetto di Sandali Francesco', 'subtitle');
 title.after(subtitle);
-subtitle.innerHTML ='Questo è un progetto di Sandali Francesco';
-subtitle.className = "subtitle";
 
 //Create Counter Structure
-const counterContainer = document.createElement('div');
+const counterContainer = createDomElement('div', '', 'container');
 subtitle.after(counterContainer);
-counterContainer.className = "container";
+
 
 //Create Display
-const counterDisplay = document.createElement('div');
+const counterDisplay = createDomElement('div', '', 'display');
 counterContainer.append(counterDisplay);
-counterDisplay.className = "display";
-
 
 //Create DisplaySlot
 const displaySlot = {};
 for (let i=0; i<5; i++){
-    displaySlot[i] = document.createElement('div');
+    displaySlot[i] = createDomElement('div', (i==0) ? '+' : '0', `slot slot${i}`);
     counterDisplay.append(displaySlot[i]);
-    displaySlot[i].className = `slot slot${i}`;
-    displaySlot[i].innerHTML = (i==0) ? '+' : '0';
 }
 
 //Create Control
-const counterControl = document.createElement('div');
+const counterControl = createDomElement('div', '', 'control');
 counterContainer.append(counterControl);
-counterControl.className = "control";
 
 //Create ControlSlot
 const counterControlSlot = {};
 for(let k=0; k<3;k++){
-    counterControlSlot[k] = document.createElement('div');
+    counterControlSlot[k] = createDomElement('div', '', 'control-slot');
     counterControl.append(counterControlSlot[k]);
-    counterControlSlot[k].className = "control-slot";
 }
 
 //Reset button
-const buttonReset = document.createElement('button');
+const buttonReset = createDomElement('button', 'Reset', 'btn');
 counterControlSlot[0].append(buttonReset);
-buttonReset.className = "btn";
-buttonReset.innerHTML = 'Reset';
 
 //Operation in general
 const operation = ['1','10','100','1000'];
 //Create button Up 
 const buttonPlus = {};
 for(let j=0; j < operation.length; j++){
-    buttonPlus[j] = document.createElement('button');
+    buttonPlus[j] = createDomElement('button',`+${operation[j]}`, 'btn');
     counterControlSlot[1].append(buttonPlus[j]);
-    buttonPlus[j].className = "btn";
-    buttonPlus[j].innerHTML =`+${operation[j]}`;
     buttonPlus[j].dataset.action = operation[j];
     buttonPlus[j].addEventListener('click',counterUp);
 }
+
 
 //Create function Up
 function counterUp(event){
@@ -103,10 +99,8 @@ function counterUp(event){
 //Create button Down
 const buttonDown = {};
 for(let q=0;q < operation.length; q++){
-    buttonDown[q] = document.createElement('button');
+    buttonDown[q] = createDomElement('button',`-${operation[q]}`, 'btn');
     counterControlSlot[2].append(buttonDown[q]);
-    buttonDown[q].className = "btn";
-    buttonDown[q].innerHTML =`-${operation[q]}`;
     buttonDown[q].dataset.action = operation[q];
     buttonDown[q].addEventListener('click',counterDown);
 }
